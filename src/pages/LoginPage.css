@@ -1,0 +1,56 @@
+/* LoginPage.css */
+body {
+    background-color: #000;
+    /* 背景黑色 */
+    color: #fff;
+    /* 字体白色 */
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #000;
+    /* 背景黑色 */
+    color: #fff;
+    /* 字体白色 */
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    /* 深灰色背景 */
+    color: #fff;
+    /* 白色字体 */
+}
+
+.login-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    /* 深灰色背景 */
+    color: #fff;
+    /* 白色字体 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+    background-color: #666;
+    /* 浅灰色背景 */
+}
+
+.login-container .register-button {
+    margin-top: 20px;
+    /* 调整注册按钮的位置 */
+}

@@ -23,14 +23,14 @@ const initialProjects = [
     },
 ];
 
-function ProjectContentPage() {
-
+function ProjectContentPage({ email }) {
     const [projects, setProjects] = useState(initialProjects);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProject, setCurrentProject] = useState(null);
     const [editedProject, setEditedProject] = useState(null);
     const [deleteMode, setDeleteMode] = useState(false);
     const [showTasks, setShowTasks] = useState(false);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -59,7 +59,6 @@ function ProjectContentPage() {
             setShowTasks(false); // 重置任务显示
         }
     };
-
 
     const handleAddTask = (projectId) => {
         const newTitle = prompt('Enter new task title:');
@@ -106,7 +105,6 @@ function ProjectContentPage() {
         }
     };
 
-
     const handleDeleteTask = (projectId, taskId) => {
         const updatedProjects = projects.map((project) => {
             if (project.id === projectId) {
@@ -130,7 +128,6 @@ function ProjectContentPage() {
             }
         }
     };
-
 
     const handleAdd = () => {
         const newName = prompt('Enter new project name:');
@@ -172,7 +169,9 @@ function ProjectContentPage() {
                             <div
                                 style={styles.deleteDot}
                                 onClick={() => handleDelete(project.id)}
-                            ></div>
+                            >
+                                &times;
+                            </div>
                         )}
                         <h1
                             style={styles.title}

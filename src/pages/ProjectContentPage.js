@@ -1,50 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const initialProjects = [
-    {
-        id: 1,
-        name: 'Project A',
-        description: 'This is the initial project named Project A.',
-        createdAt: new Date().toLocaleDateString(),
-        tasks: [
-            { id: 1, title: 'Task 1', description: 'Task 1 description' },
-            { id: 2, title: 'Task 2', description: 'Task 2 description' },
-        ],
-    },
-    {
-        id: 2,
-        name: 'Project B',
-        description: 'This is the initial project named Project B.',
-        createdAt: new Date().toLocaleDateString(),
-        tasks: [
-            { id: 1, title: 'Task 1', description: 'Task 1 description' },
-            { id: 2, title: 'Task 2', description: 'Task 2 description' },
-        ],
-    },
-];
+const apiUrl = 'http://localhost:8080/api/projects';
 
 function ProjectContentPage({ email }) {
-    const [projects, setProjects] = useState(initialProjects);
+    const [projects, setProjects] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProject, setCurrentProject] = useState(null);
     const [editedProject, setEditedProject] = useState(null);
     const [deleteMode, setDeleteMode] = useState(false);
     const [showTasks, setShowTasks] = useState(false);
+    const [file, setFile] = useState(null);
 
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    const fetchProjects = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/projects`);
+            const data = await response.json();
+            setProjects(data);
+        } catch (error) {
+            console.error('Failed to fetch projects:', error);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditedProject({ ...editedProject, [name]: value });
     };
 
-    const handleSave = () => {
-        setProjects(
-            projects.map((project) =>
-                project.id === editedProject.id ? editedProject : project
-            )
-        );
-        setIsEditing(false);
-        setCurrentProject(null);
+    const handleAdd = async () => {
+        const newName = prompt('Enter new project name:');
+        const newDescription = prompt('Enter new project description:');
+        const userEmail = localStorage.getItem('userEmail');
+
+        if (newName && newDescription) {
+            const newProject = {
+                name: newName,
+                description: newDescription,
+                userEmail: userEmail  // 添加 userEmail 字段
+            };
+
+            try {
+                const response = await fetch(`${apiUrl}/addProject`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newProject)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const savedProject = await response.json();
+                setProjects([...projects, savedProject]);
+            } catch (error) {
+                console.error('Failed to add project:', error);
+            }
+        }
+    };
+
+    const handleSave = async () => {
+        try {
+            const projectId = editedProject.id;
+            const response = await fetch(`${apiUrl}/editProject/${projectId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedProject),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const updatedProject = await response.json();
+            setProjects(
+                projects.map((project) =>
+                    project.id === updatedProject.id ? updatedProject : project
+                )
+            );
+            setIsEditing(false);
+            setCurrentProject(null);
+        } catch (error) {
+            console.error('Failed to save project:', error);
+        }
     };
 
     const handleEdit = (project) => {
@@ -52,58 +96,114 @@ function ProjectContentPage({ email }) {
         setIsEditing(true);
     };
 
-    const handleDelete = (projectId) => {
-        setProjects(projects.filter((project) => project.id !== projectId));
-        if (currentProject && currentProject.id === projectId) {
-            setCurrentProject(null); // 如果删除的是当前显示的项目，关闭项目详情
-            setShowTasks(false); // 重置任务显示
+    const handleDelete = async (projectId) => {
+        try {
+            const response = await fetch(`${apiUrl}/deleteProject/${projectId}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const updatedProjects = projects.filter((project) => project.id !== projectId);
+            setProjects(updatedProjects);
+
+            if (currentProject && currentProject.id === projectId) {
+                setCurrentProject(null);
+                setShowTasks(false);
+            }
+        } catch (error) {
+            console.error('Failed to delete project:', error);
         }
     };
 
     const handleAddTask = (projectId) => {
         const newTitle = prompt('Enter new task title:');
-        const newDescription = prompt('Enter new task description:');
-        if (newTitle && newDescription) {
+        // const newDescription = prompt('Enter new task description:');
+        const newComment = prompt('Enter your comment:');
+        if (newTitle && newComment) {
             const newTask = {
-                id: projects.find(p => p.id === projectId).tasks.length + 1,
-                title: newTitle,
-                description: newDescription,
+                name: newTitle,
+                // description: newDescription,
+                comment: newComment,  // 添加评论字段
             };
-            const updatedProjects = projects.map((project) => {
-                if (project.id === projectId) {
-                    return { ...project, tasks: [...project.tasks, newTask] };
-                }
-                return project;
-            });
-            setProjects(updatedProjects);
+
+            fetch(`http://localhost:8080/api/tasks/add/${projectId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newTask),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const updatedProjects = projects.map((project) => {
+                        if (project.id === projectId) {
+                            return { ...project, tasks: [...project.tasks, data] };
+                        }
+                        return project;
+                    });
+                    setProjects(updatedProjects);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
     };
+
 
     const handleModifyTask = (projectId, taskId) => {
         const newTitle = prompt('Enter modified task title:');
-        const newDescription = prompt('Enter modified task description:');
-        if (newTitle && newDescription) {
-            const updatedProjects = projects.map((project) => {
-                if (project.id === projectId) {
-                    const updatedTasks = project.tasks.map((task) => {
-                        if (task.id === taskId) {
-                            return { ...task, title: newTitle, description: newDescription };
-                        }
-                        return task;
-                    });
-                    return { ...project, tasks: updatedTasks };
-                }
-                return project;
-            });
-            setProjects(updatedProjects);
+        const newComment = prompt('Enter modified comment:');
+        const newProjectId = projectId; // 保持项目ID一致
 
-            // 直接更新当前显示的项目
-            if (currentProject && currentProject.id === projectId) {
-                const updatedProject = updatedProjects.find(project => project.id === projectId);
-                setCurrentProject(updatedProject);
-            }
+        if (newTitle && newComment) {
+            const updatedTask = {
+                name: newTitle,
+                comment: newComment,
+                projectId: newProjectId,
+            };
+
+            fetch(`http://localhost:8080/api/tasks/edit/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedTask),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const updatedProjects = projects.map(project => {
+                        if (project.id === projectId) {
+                            const updatedTasks = project.tasks.map(task => {
+                                if (task.id === taskId) {
+                                    return data;
+                                }
+                                return task;
+                            });
+                            return { ...project, tasks: updatedTasks };
+                        }
+                        return project;
+                    });
+                    setProjects(updatedProjects);
+
+                    if (currentProject && currentProject.id === projectId) {
+                        const updatedProject = updatedProjects.find(project => project.id === projectId);
+                        setCurrentProject(updatedProject);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     };
+
 
     const handleDeleteTask = (projectId, taskId) => {
         const updatedProjects = projects.map((project) => {
@@ -129,21 +229,6 @@ function ProjectContentPage({ email }) {
         }
     };
 
-    const handleAdd = () => {
-        const newName = prompt('Enter new project name:');
-        const newDescription = prompt('Enter new project description:');
-        if (newName && newDescription) {
-            const newProject = {
-                id: projects.length + 1,
-                name: newName,
-                description: newDescription,
-                createdAt: new Date().toLocaleDateString(),
-                tasks: [],
-            };
-            setProjects([...projects, newProject]);
-        }
-    };
-
     const toggleDeleteMode = () => {
         setDeleteMode(!deleteMode);
     };
@@ -157,6 +242,65 @@ function ProjectContentPage({ email }) {
             setCurrentProject(project);
             setShowTasks(false); // Reset tasks display
             setIsEditing(false); // Exit editing mode if open
+        }
+    };
+
+
+
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+
+    const handleSave2 = async (projectId, taskId) => {
+        if (!file) {
+            alert('请先选择一个文件！');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // 添加 taskId 和 projectId 到 FormData
+        formData.append('taskId', taskId);
+        formData.append('projectId', projectId); // 如果需要 projectId
+
+        try {
+            const response = await fetch('http://localhost:8080/api/tasks/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('上传成功:', result);
+                // 在这里可以处理返回的结果，例如更新 UI
+            } else {
+                const errorText = await response.text(); // 获取错误信息
+                console.error('上传失败:', response.statusText, errorText);
+            }
+        } catch (error) {
+            console.error('上传过程中发生错误:', error);
+        }
+    };
+    // Function to create a file URL from Base64 data
+    const createFileUrlFromBase64 = (base64Data, fileName) => {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Uint8Array(byteCharacters.length);
+
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+
+        const blob = new Blob([byteNumbers], { type: 'application/octet-stream' }); // Adjust MIME type as needed
+        return URL.createObjectURL(blob);
+    };
+
+    const openAttachment = (fileUrl) => {
+        if (fileUrl) {
+            window.open(fileUrl, '_blank'); // Open the file in a new tab
+        } else {
+            alert('没有可显示的附件！'); // Alert if no file URL is provided
         }
     };
 
@@ -180,7 +324,7 @@ function ProjectContentPage({ email }) {
                             {project.name}
                         </h1>
                         <p style={styles.description}>{project.description}</p>
-                        <p style={styles.meta}>Created on: {project.createdAt}</p>
+                        <p style={styles.meta}>User Email: {project.userEmail}</p> {/* 显示 userEmail */}
                         {!deleteMode && (
                             <div>
                                 <button onClick={() => handleEdit(project)}>Edit</button>
@@ -195,7 +339,7 @@ function ProjectContentPage({ email }) {
                     <div style={styles.projectDetailContainer}>
                         <h1 style={styles.title}>{currentProject.name}</h1>
                         <p style={styles.description}>{currentProject.description}</p>
-                        <p style={styles.meta}>Created on: {currentProject.createdAt}</p>
+                        <p style={styles.meta}>User Email: {currentProject.userEmail}</p> {/* 显示 userEmail */}
                         <button onClick={() => setShowTasks(!showTasks)}>
                             {showTasks ? 'Hide Tasks' : 'Show Tasks'}
                         </button>
@@ -203,7 +347,8 @@ function ProjectContentPage({ email }) {
                             <ul>
                                 {currentProject.tasks.map((task) => (
                                     <li key={task.id} style={styles.taskStyle}>
-                                        {task.title} - {task.description}
+                                        {task.name}
+                                        <p style={styles.comment}>{task.comment}</p>
                                         {!deleteMode && (
                                             <div>
                                                 <button onClick={() => handleModifyTask(currentProject.id, task.id)}>
@@ -212,6 +357,14 @@ function ProjectContentPage({ email }) {
                                                 <button onClick={() => handleDeleteTask(currentProject.id, task.id)}>
                                                     Delete
                                                 </button>
+                                                <button onClick={() => openAttachment(createFileUrlFromBase64(task.fileData, 'task_file.txt'))}>
+                                                    show Attachment
+                                                </button>
+                                                <div>
+                                                    <input type="file" onChange={handleFileChange} />
+                                                    <button onClick={() => handleSave2(currentProject.id, task.id)}>保存</button>
+
+                                                </div>
                                             </div>
                                         )}
                                     </li>
@@ -246,9 +399,15 @@ function ProjectContentPage({ email }) {
                 </button>
             </div>
         </div>
-    );
+    )
 }
 const styles = {
+    comment: {
+        fontSize: '14px',
+        color: '#555',
+        marginTop: '5px',
+        fontStyle: 'italic',
+    },
     pageContainer: {
         padding: '20px',
         display: 'flex',

@@ -54,3 +54,17 @@ body {
     margin-top: 20px;
     /* 调整注册按钮的位置 */
 }
+
+.login-container .delete-button {
+    margin-top: 10px;
+    /* 调整删除按钮的位置 */
+    padding: 5px 10px;
+    /* 调整删除按钮的大小 */
+    background-color: #555;
+    /* 深灰色背景 */
+}
+
+.login-container .delete-button:hover {
+    background-color: #777;
+    /* 浅灰色背景 */
+}

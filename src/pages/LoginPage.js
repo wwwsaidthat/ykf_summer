@@ -44,6 +44,24 @@ function LoginPage() {
             setError('An error occurred during login. Please try again.;%s', error);
         }
     };
+    const handleDelete = async () => {
+        try {
+            // 通过获取所有用户找到匹配的用户ID
+            const allResponse = await axios.get('http://localhost:8080/demo/all');
+            const user = allResponse.data.find(user => user.email === email);
+
+            if (user) {
+                // 发送 DELETE 请求删除用户
+                await axios.delete(`http://localhost:8080/demo/delete/${user.id}`);
+                setError('User deleted successfully.');
+            } else {
+                setError('User not found.');
+            }
+        } catch (error) {
+            console.error('Delete failed', error);
+            setError('An error occurred during deletion. Please try again.');
+        }
+    };
 
     return (
         <div className="login-container">
@@ -63,6 +81,7 @@ function LoginPage() {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <button onClick={handleLogin}>Login</button>
             <button className="register-button" onClick={() => navigate('/register')}>Register</button>
+            <button className="delete-button" onClick={handleDelete}>Delete Account</button>
         </div>
     );
 }

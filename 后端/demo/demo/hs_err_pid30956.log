@@ -1,0 +1,218 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 266338304 bytes for G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3548), pid=30956, tid=26120
+#
+# JRE version:  (17.0.12+8) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (17.0.12+8-LTS-286, mixed mode, emulated-client, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -XX:TieredStopAtLevel=1 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=* -javaagent:D:\Java\idea\IntelliJ IDEA 2023.3.4\lib\idea_rt.jar=30337:D:\Java\idea\IntelliJ IDEA 2023.3.4/bin -Dfile.encoding=UTF-8 com.example.demo.DemoApplication
+
+Host: 11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz, 8 cores, 15G,  Windows 11 , 64 bit Build 22621 (10.0.22621.3672)
+Time: Mon Aug  5 18:38:05 2024  Windows 11 , 64 bit Build 22621 (10.0.22621.3672) elapsed time: 0.057638 seconds (0d 0h 0m 0s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000001a353755760):  JavaThread "Unknown thread" [_thread_in_vm, id=26120, stack(0x0000001a9a700000,0x0000001a9a800000)]
+
+Stack: [0x0000001a9a700000,0x0000001a9a800000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x67a04a]
+V  [jvm.dll+0x7da4ed]
+V  [jvm.dll+0x7dbe33]
+V  [jvm.dll+0x7dc4a3]
+V  [jvm.dll+0x24508f]
+V  [jvm.dll+0x677089]
+V  [jvm.dll+0x66bd32]
+V  [jvm.dll+0x301fa6]
+V  [jvm.dll+0x309546]
+V  [jvm.dll+0x359d2e]
+V  [jvm.dll+0x359f5f]
+V  [jvm.dll+0x2d9078]
+V  [jvm.dll+0x2d9fe4]
+V  [jvm.dll+0x7aca21]
+V  [jvm.dll+0x367591]
+V  [jvm.dll+0x78b999]
+V  [jvm.dll+0x3ec83f]
+V  [jvm.dll+0x3ee471]
+C  [jli.dll+0x5297]
+C  [ucrtbase.dll+0x29333]
+C  [KERNEL32.DLL+0x1257d]
+C  [ntdll.dll+0x5af28]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007fff689d7a18, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+
+Other Threads:
+  0x000001a3537c1e10 GCTaskThread "GC Thread#0" [stack: 0x0000001a9a800000,0x0000001a9a900000] [id=33316]
+  0x000001a3537d3950 ConcurrentGCThread "G1 Main Marker" [stack: 0x0000001a9a900000,0x0000001a9aa00000] [id=27816]
+  0x000001a3537d5280 ConcurrentGCThread "G1 Conc#0" [stack: 0x0000001a9aa00000,0x0000001a9ab00000] [id=28604]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fff68209b67]
+
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x000001a3537518d0] Heap_lock - owner thread: 0x000001a353755760
+
+Heap address: 0x0000000703200000, size: 4046 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+<Empty>
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000703200000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+
+[error occurred during error reporting (printing heap information), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007fff685f3859]
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Events (1 events):
+Event: 0.011 Loaded shared library C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\java.dll
+
+
+Dynamic libraries:
+0x00007ff6a2db0000 - 0x00007ff6a2dc0000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\java.exe
+0x00007ff835bf0000 - 0x00007ff835e07000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff833af0000 - 0x00007ff833bb4000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff832f50000 - 0x00007ff8332fd000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff8333c0000 - 0x00007ff8334d1000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffff00c0000 - 0x00007ffff00d9000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\jli.dll
+0x00007ff834df0000 - 0x00007ff834ea2000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff833a30000 - 0x00007ff833ad7000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffff42c0000 - 0x00007ffff42db000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\VCRUNTIME140.dll
+0x00007ff833bc0000 - 0x00007ff833c69000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff833900000 - 0x00007ff833928000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ff835170000 - 0x00007ff835284000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff835880000 - 0x00007ff835a2e000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff832f20000 - 0x00007ff832f46000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff835b80000 - 0x00007ff835ba9000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff833550000 - 0x00007ff833669000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff820120000 - 0x00007ff8203b3000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.22621.3672_none_2713b9d173822955\COMCTL32.dll
+0x00007ff833860000 - 0x00007ff8338fa000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff829c60000 - 0x00007ff829c6a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff834ed0000 - 0x00007ff834f01000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff819690000 - 0x00007ff81969c000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\vcruntime140_1.dll
+0x00007fffb8ac0000 - 0x00007fffb8b4e000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\msvcp140.dll
+0x00007fff67f20000 - 0x00007fff68b00000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\server\jvm.dll
+0x00007ff835160000 - 0x00007ff835168000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ff80b7f0000 - 0x00007ff80b7f9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff835a30000 - 0x00007ff835aa1000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff82f580000 - 0x00007ff82f5b4000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff832040000 - 0x00007ff832058000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff816b10000 - 0x00007ff816b1a000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\jimage.dll
+0x00007ff830870000 - 0x00007ff830aa2000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff834780000 - 0x00007ff834b08000 	C:\WINDOWS\System32\combase.dll
+0x00007ff8344d0000 - 0x00007ff8345a7000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ff8107d0000 - 0x00007ff810802000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff833670000 - 0x00007ff8336eb000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff812020000 - 0x00007ff81202e000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\instrument.dll
+0x00007fffdffc0000 - 0x00007fffdffe5000 	C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.22621.3672_none_2713b9d173822955;C:\Users\yaokaifang\.jdks\jdk-17.0.12\bin\server
+
+VM Arguments:
+jvm_args: -XX:TieredStopAtLevel=1 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=* -javaagent:D:\Java\idea\IntelliJ IDEA 2023.3.4\lib\idea_rt.jar=30337:D:\Java\idea\IntelliJ IDEA 2023.3.4/bin -Dfile.encoding=UTF-8 
+java_command: com.example.demo.DemoApplication
+java_class_path (initial): D:\暑校\后端\demo\demo\build\classes\java\main;D:\暑校\后端\demo\demo\build\resources\main;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-data-jpa\3.3.2\2731d74dfc18fb905c29930cf55493980c2cee5a\spring-boot-starter-data-jpa-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-web\3.3.2\720418538668a8742d0ae24097811d5250cf5c32\spring-boot-starter-web-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-aop\3.3.2\26d996e253768d3121bb3ffbef28cefc07fdbddb\spring-boot-starter-aop-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-jdbc\3.3.2\544775d745288972598ab2e872e5a4816b6d9b39\spring-boot-starter-jdbc-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.hibernate.orm\hibernate-core\6.5.2.Final\e9e0cc47f6cd2b2553968aee66bd9e55e7485221\hibernate-core-6.5.2.Final.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.data\spring-data-jpa\3.3.2\cfa9cd077f3f15d0657bbb6d7c8e1c7c7da7e6e2\spring-data-jpa-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework\spring-aspects\6.1.11\141d92094a460f338aa0999023ca7a25861d49a1\spring-aspects-6.1.11.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-json\3.3.2\d8b8b73e7820092b4e41d730eeb968add7957c45\spring-boot-starter-json-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter\3.3.2\f9377a223dab5c4afe7aead05bf6ac567cf565ab\spring-boot-starter-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-starter-tomcat\3.3.2\37ccb53cd5207fffd7a6fc1b591687f8cb1350df\spring-boot-starter-tomcat-3.3.2.jar;C:\Users\yaokaifang\.gradle\caches\modules-2\files-2.1\org.springfra
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 4                                         {product} {ergonomic}
+     uint ConcGCThreads                            = 2                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 8                                         {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 2097152                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 266338304                                 {product} {ergonomic}
+     bool ManagementServer                         = true                                      {product} {command line}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4242538496                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 2097152                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 0                                      {pd product} {ergonomic}
+     bool ProfileInterpreter                       = false                                  {pd product} {command line}
+    uintx ProfiledCodeHeapSize                     = 0                                      {pd product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 4242538496                             {manageable} {ergonomic}
+     intx TieredStopAtLevel                        = 1                                         {product} {command line}
+     bool UseCompressedClassPointers               = true                           {product lp64_product} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags
+ #1: stderr all=off uptime,level,tags
+
+Environment Variables:
+PATH=C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\nju\Bandizip\;C:\Program Files\Bandizip\;D:\mingw64\bin;F:\mingw64\bin;D:\the-science-and-technology\namd\NAMD_2.14_Win64-multicore\NAMD_2.14_Win64-multicore\namd2;D:\the-science-and-technology\vmd;D:\final_project\mingw(CLion+VSC)\SDL2-2.26.0-allinone\x86_64-w64-mingw32\bin;D:\VSC\mingw64\bin;D:\jump\mingw64\bin;D:\jump\mingw(CLion+VSC)\SDL2-2.26.0-allinone\x86_64-w64-mingw32\bin;C:\ProgramData\chocolatey\bin;D:\front-size;D:\front-size\cache;D:\front-size\global;D:\front-size\;D:\Java\IntelliJIdea2023.3;D:\Java\code\demo\gradle\gradle-8.5-bin\gradle-8.5\bin;D:\nju\Git\cmd;D:\EL-UI\微信开发者工具\微信web开发者工具\dll;C:\Users\yaokaifang\AppData\Local\Programs\Python\Launcher\;D:\0.software\anaconda\anaconda;D:\0.software\anaconda\anaconda\Library\mingw-w64\bin;D:\0.software\anaconda\anaconda\Library\usr\bin;D:\0.software\anaconda\anaconda\Library\bin;D:\0.software\anaconda\anaconda\Scripts;D:\the-science-and-technology\namd\NAMD_2.14_Win64-multicore\NAMD_2.14_Win64-multicore;D:\nju\Microsoft VS Code\bin;C:\Users\yaokaifang\AppData\Roaming\npm;D:\Java\idea\IntelliJ IDEA 2023.3.4\bin
+USERNAME=姚凯方
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 140 Stepping 1, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 22621 (10.0.22621.3672)
+OS uptime: 2 days 4:15 hours
+
+CPU: total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 140 stepping 1 microcode 0x8a, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, avx512f, avx512dq, avx512cd, avx512bw, avx512vl, sha, fma, vzeroupper, avx512_vpopcntdq, avx512_vpclmulqdq, avx512_vaes, avx512_vnni, clflush, clflushopt, clwb, avx512_vbmi2, avx512_vbmi
+
+Memory: 4k page, system-wide physical 16183M (2132M free)
+TotalPageFile size 26581M (AvailPageFile size 276M)
+current process WorkingSet (physical memory assigned to process): 11M, peak: 11M
+current process commit charge ("private bytes"): 55M, peak: 309M
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (17.0.12+8-LTS-286) for windows-amd64 JRE (17.0.12+8-LTS-286), built on Jun  5 2024 06:46:59 by "mach5one" with MS VC++ 17.6 (VS2022)
+
+END.

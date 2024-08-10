@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+前端：react 框架  vscode进行编写代码
+后端：springboot框架，java代码 使用idea进行编写 后端使用的数据库是mysql
+网页使用说明：
+1.多用户登录
+http://localhost:3000/login这是对于已经有用户的登录界面，通过输入邮箱和密码可以进行登录
+http://localhost:3000/register这是对于没有用户的注册界面，可以通过登陆界面的register按钮直接进行跳转
+在登陆界面的delete是只检测用户的邮箱，删除用户不需要密码，这只是为了适合在调试的时候进行，实际软件并无意义
+如果登录失败会有相应的提示，如果登录成功会跳转到http://localhost:3000/content这个看板页面。
+用户的情况可以通过http://localhost:8080/demo/all这个网页直接看到
+用户登录的逻辑也是从后端数据库中寻找有无当前的用户，如果存在则登陆成功
+至此基本实现了多用户登录的内容
+2.项目创建
+在看板界面，可以点击addproject增加项目，为了更直观的看到所有的项目，可以通过http://localhost:8080/api/projects/projects直接看到后端目前所有的项目
+其中项目的任务也可以看到项目和任务之间是通过任务的id进行联系的，项目的id是自动增加的，但是删除任务之后前面的id将不再出现，这样可能会导致后来的id很大，
+但是通过简单的逻辑实现了id的唯一性
+3.项目添加任务
+每一个项目下面都会有两个按钮，edit和addtask 其中edit是用来修改项目的名称的，addtask是用来增加项目的任务的
+点击addtask之后会弹出提示框进行相关的初始内容的输入（当你首先点击项目进行查看的时候并不会更新你在这个期间进行的addtask，你需要重新点击任务才可以看到新加的task）
+4.任务查看
+当你点击任务的名称的时候，在下方会自动弹出一个看板，点击showtask，会在下方展示出当前项目的所有任务
+5.任务评论
+任务下方会有comment，点击modify可以对于任务名称和评论进行修改
+6.展示项目任务看板，
+项目看板在上方，任务看板在下方
+7.任务可添加附件
+选择文件之后可以添加附件，但是不可以很大，我提供了三个可以添加的附件在可添加文件的文件夹里面，注意：只能添加一个附件，多了会覆盖
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+额外完成的功能：
+1. 项目的删除，项目的修改
+2. 项目里面任务的删除和修改
+3. 附件的内容可以查看
+4. 项目增加会显示项目所属的用户
